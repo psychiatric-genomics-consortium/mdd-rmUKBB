@@ -1,0 +1,92 @@
+---
+title: MDD2 GWAS removing overlap with UK Biobank 
+author: Mark Adams 
+output:
+  html_document:
+    toc: TRUE
+    code_folding: hide
+    number_sections: TRUE
+    df_print: kable
+    keep_md: true
+  md_document:
+    variant: markdown_github
+---
+
+Recent PGC MDD GWAS ([Wray...Sullivan 2018](https://www.nature.com/articles/s41588-018-0090-3?_ga=2.222013656.112907065.1541203200-2059058911.1541203200), [Howard...McIntosh 2019](https://www.nature.com/articles/s41593-018-0326-7)) contain summary statistics from [UK Biobank](https://www.ukbiobank.ac.uk/) (UKBB). Here we create summary statistics that have UK Biobank participants removed.
+
+There are 959 participants that overlap between PGC MDD and UKBB cohorts. In previous analyses, this overlap was handled by removing overlapping individuals from the UKBB analysis. Thus, becuase these individuals were retained in the PGC cohorts, even versions of the Wray or Howard summary statistics that excluded the UKBB summary statistics from the meta-analysis (leave-one-out [LOO] with reference `noUKBB`) would overlap with the whole UKBB sample. For this analysis, we removed overlapping individuals from the PGC MDD cohorts before conducting the meta-analysis, and refer to these results as `rmUKBB` (**remove** UK Biobank).
+
+Analysis performed on the [LISA cluster](http://geneticcluster.org/) using [Ricopili](https://sites.google.com/a/broadinstitute.org/ricopili/).
+
+To get an interactive session on LISA:
+
+```{bash, eval=FALSE}
+
+#Go into interactive mode
+srun -n 16 -t 1:00:00 --pty bash -il
+
+#Load R
+module load pre2019
+module load R/3.4.3
+
+```
+
+# Directory setup
+
+`DIR` is a stand-in for the location of each data set
+
+```{bash, eval=FALSE}
+
+mkdir data
+
+# overlap data
+ln -s /home/DIR/959_PGC_UKB_overlap.txt data/
+
+# MDD Wave1 data
+ln -s /home/DIR/v1/* data/
+
+# BOMA data
+ln -s /home/DIR/v1_boma/* data/
+
+# GenRED
+ln -s /home/DIR/v1_genred/* data/
+
+```
+
+# PGC MDD2-UKBB overlap
+
+Overlap between PGC MDD and UKBB cohorts were matched by [genotype checksums](https://personal.broadinstitute.org/sripke/share_links/checksums_download/) (see also [Turchin and Hirschhorn 2012](https://academic.oup.com/bioinformatics/article/28/6/886/312495)).
+
+```{r}
+
+library(readr)
+library(dplyr)
+library(stringr)
+library(tidyr)
+
+overlap <- read_table2('data/959_PGC_UKB_overlap.txt', col_names=c('CS', 'FID', 'IID'))
+
+``` 
+
+Tally cohorts with overlap
+
+```{r}
+
+cohorts_count <- 
+overlap %>%
+filter(CS != 'CheckSum.GenerationScotland.cs') %>%
+select(FID) %>%
+separate(FID, into=c('FID', 'IID'), sep='\\*') %>%
+separate(FID, into=c('status', 'disorder', 'cohort', 'ancestry', 'sr', 'platform'), sep='_') %>% 
+group_by(cohort) %>%
+tally()
+
+cohorts_count
+
+```
+
+# Phenotypes
+
+For cohorts with overlap, create MDD case/control phenotype files where phenotype of overlapping participants is set to missing (`-9`).
+
+
