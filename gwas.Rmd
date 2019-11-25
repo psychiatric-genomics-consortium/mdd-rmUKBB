@@ -89,4 +89,21 @@ cohorts_count
 
 For cohorts with overlap, create MDD case/control phenotype files where phenotype of overlapping participants is set to missing (`-9`).
 
+```{r}
+
+fams <- lapply(cohorts_count$cohort, function(cohort) {
+
+        fam_file <- list.files('data', paste0('mdd_', cohort, '.+-qc\\.fam$'), full.names=TRUE)
+
+        if(length(fam_file > 0)) {
+            fam <- read_table2(fam_file, col_names=c('FID', 'IID', 'father', 'mother', 'sex', 'pheno'), col_types='ccccii')
+        } else {
+           warning(paste('No .fam file for cohort', cohort))
+           fam <- NULL
+        }
+
+        return(fam)
+})
+
+```
 
