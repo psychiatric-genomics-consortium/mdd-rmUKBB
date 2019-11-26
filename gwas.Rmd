@@ -93,7 +93,7 @@ For cohorts with overlap, create MDD case/control phenotype files where phenotyp
 
 fams <- lapply(cohorts_count$cohort, function(cohort) {
 
-        fam_file <- list.files('data', paste0('mdd_', cohort, '.+-qc\\.fam$'), full.names=TRUE)
+        fam_file <- list.files('data', paste0('mdd_', cohort, '.+\\.fam$'), full.names=TRUE)
 
         if(length(fam_file > 0)) {
             fam <- read_table2(fam_file, col_names=c('FID', 'IID', 'father', 'mother', 'sex', 'pheno'), col_types='ccccii')
@@ -105,5 +105,54 @@ fams <- lapply(cohorts_count$cohort, function(cohort) {
         return(fam)
 })
 
+fams_pheno <- 
+bind_rows(fams) %>%
+select(FID, IID, pheno)
+
+fams_pheno %>%
+group_by(pheno) %>%
+tally()
+
 ```
 
+Only retain phenotypes of participants from cohorts with overlap and set the phenotype of participants in the overlap file to `-9`
+
+```{r}
+
+rmUKBB_pheno <- 
+fams_pheno %>%
+left_join(overlap, by=c('FID', 'IID')) %>%
+mutate(pheno=if_else(is.na(CS), true=pheno, false=-9L))
+
+rmUKBB_pheno %>%
+group_by(pheno) %>%
+tally()
+
+write_tsv(rmUKBB_pheno, 'data/mdd_rmUKBB.pheno', col_names=F)
+
+```
+
+Write out `datasets_info` to list the cohorts to analyze
+
+```{r}
+
+datasets_info <- str_replace(unlist(sapply(cohorts_count$cohort, function(cohort) list.files('data', paste0('mdd_', cohort, '.+\\.ch\\.fl$')), simplify=TRUE, USE.NAMES=FALSE)), pattern='dasuqc1_', replacement='')
+
+write(datasets_info, 'data/datasets_info', ncol=1) 
+
+```
+
+# GWAS
+
+Run the Ricopoli pipeline
+
+```{bash, eval=FALSE}
+
+cd data
+postimp_navi --out pgc_MDD13 --addout rmUKBB \
+--mds MDD29.0515.nproj.menv.mds_cov \
+--coco 1,2,3,4,5,6 --pheno mdd_rmUKBB.pheno \
+--popname eur \
+--onlymeta --noclump --noldsc --nolahunt
+
+```
