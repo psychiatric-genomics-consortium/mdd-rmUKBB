@@ -156,3 +156,66 @@ postimp_navi --out pgc_MDD13 --addout rmUKBB \
 --onlymeta --noclump --noldsc --nolahunt
 
 ```
+
+Copy anchor cohort single datasets that removed UKBB and link additional datasets for meta-analysis
+
+```{bash, eval=FALSE}
+
+mkdir -p data/summary_stats_0120_rmUKBB/single_dataset/additional_datasets
+
+# single datasets
+cp data/report_pgc_MDD13_rmUKBB/daner_mdd_*.gz data/summary_stats_0120_rmUKBB/single_dataset/
+
+# additional datasets
+
+# copy GenScot removing UKBB
+cp DIR/daner_mdd_genscot_1119a_rmUKBB.gz data/summary_stats_0120_rmUKBB/single_dataset/additional_datasets/
+
+# symlink other additional datasets except for GenScot and UKBB
+ln -s DIR/summary_stats_0517/single_dataset/additional_datasets/daner_{GERA,mdd_decode,mddGWAS_new_ipsych}*.gz data/summary_stats_0120_rmUKBB/single_dataset/additional_datasets/
+
+```
+
+Link anchor cohort single datasets that did not need to remove UKBB.
+
+```{r}
+
+for daner in $wave2/summary_stats_0517/single_dataset/daner_mdd_*.gz; do
+        # get filename
+        daner_file=$(basename $daner)
+        # check if there is not already a daner file with this name
+        if [ ! -f data/summary_stats_0120_rmUKBB/single_dataset/${daner_file} ]; then
+                ln -s $daner data/summary_stats_0120_rmUKBB/single_dataset/
+       fi
+done
+
+```
+
+# Meta-analysis
+
+Meta-analyze PGC MDD anchor cohorts
+
+```{bash, eval=FALSE}
+
+mkdir -p data/meta
+cd data/meta
+
+# symlink all sumstats into the meta analysis working directory
+ln -s ../summary_stats_0120_rmUKBB/single_dataset/daner*.gz . 
+
+# list of anchor cohort sumstats file
+ls daner_mdd_*.gz > anchor_dataset_dir
+
+# check that none of the symlinks are broken
+for daner in daner_mdd_*.gz; do
+        if [ -e $daner ]; then
+          echo $daner does exist
+        fi
+done
+
+# symlink the reference file
+ln -s /home/DIR/v1/reference_info .
+
+postimp_navi --result anchor_dataset_dir --onlymeta --out MDD29.0120a.rmUKBB 
+
+``` 
