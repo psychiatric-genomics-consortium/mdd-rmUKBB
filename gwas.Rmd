@@ -4,9 +4,7 @@ author: Mark Adams
 output:
   html_document:
     toc: TRUE
-    code_folding: hide
     number_sections: TRUE
-    df_print: kable
     keep_md: true
   md_document:
     variant: markdown_github
@@ -18,7 +16,7 @@ There are 959 participants that overlap between PGC MDD and UKBB cohorts. In pre
 
 Analysis performed on the [LISA cluster](http://geneticcluster.org/) using [Ricopili](https://sites.google.com/a/broadinstitute.org/ricopili/).
 
-To get an interactive session on LISA:
+To get an interactive session on LISA and load required programs:
 
 ```{bash, eval=FALSE}
 
@@ -28,6 +26,19 @@ srun -n 16 -t 1:00:00 --pty bash -il
 #Load R
 module load pre2019
 module load R/3.4.3
+
+# download pandoc
+curl -L -O https://github.com/jgm/pandoc/releases/download/2.9.1.1/pandoc-2.9.1.1-linux-amd64.tar.gz
+tar xzf pandoc-2.9.1.1-linux-amd64.tar.gz
+
+
+```
+
+This document can be generate with
+
+```{bash, eval=FALSE}
+
+export PATH=$PATH:pandoc-2.9.1.1/bin
 
 ```
 
@@ -218,4 +229,32 @@ ln -s /home/DIR/v1/reference_info .
 
 postimp_navi --result anchor_dataset_dir --onlymeta --out MDD29.0120a.rmUKBB 
 
+```
+
+Copy meta analysis file
+
+```{bash, eval=FALSE}
+
+cp data/meta/report_MDD29.0120a.rmUKBB/daner_MDD29.0120a.rmUKBB.gz data/summary_stats_0120_rmUKBB/single_dataset/
+
 ``` 
+
+Set up full meta analysis
+
+```{bash, eval=FALSE}
+
+mkdir -p data/full_meta
+cd data/full_meta
+
+ln -s ../summary_stats_0120_rmUKBB/single_dataset/daner_MDD29.0120a.rmUKBB.gz .
+
+ln -s ../summary_stats_0120_rmUKBB/single_dataset/additional_datasets/daner_*.gz .
+
+ls daner_*.gz > full_dataset_dir
+
+ln -s ../meta/reference_info .
+
+postimp_navi --result full_dataset_dir --onlymeta --out pgc_mdd_meta_w2_no23andMe_rmUKBB
+
+
+```
