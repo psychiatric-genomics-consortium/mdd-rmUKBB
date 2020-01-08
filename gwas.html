@@ -310,10 +310,11 @@ $(document).ready(function () {
 
 <div id="TOC">
 <ul>
-<li><a href="#pgc-mdd2-ukbb-overlap"><span class="toc-section-number">1</span> PGC MDD2-UKBB overlap</a></li>
-<li><a href="#phenotypes"><span class="toc-section-number">2</span> Phenotypes</a></li>
-<li><a href="#gwas"><span class="toc-section-number">3</span> GWAS</a></li>
-<li><a href="#meta-analysis"><span class="toc-section-number">4</span> Meta-analysis</a></li>
+<li><a href="#directory-setup"><span class="toc-section-number">1</span> Directory setup</a></li>
+<li><a href="#pgc-mdd2-ukbb-overlap"><span class="toc-section-number">2</span> PGC MDD2-UKBB overlap</a></li>
+<li><a href="#phenotypes"><span class="toc-section-number">3</span> Phenotypes</a></li>
+<li><a href="#gwas"><span class="toc-section-number">4</span> GWAS</a></li>
+<li><a href="#meta-analysis"><span class="toc-section-number">5</span> Meta-analysis</a></li>
 </ul>
 </div>
 
@@ -338,14 +339,10 @@ tar xzf pandoc-2.9.1.1-linux-amd64.tar.gz
 export PATH=$PATH:pandoc-2.9.1.1/bin
 Rscript -e &quot;rmarkdown::render(&#39;gwas.Rmd&#39;)&quot;
 </code></pre>
-<pre><code>
-# Directory setup
-
-`DIR` is a stand-in for the location of each data set
-
-
-```bash
-
+<section id="directory-setup" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Directory setup</h1>
+<p><code>DIR</code> is a stand-in for the location of each data set</p>
+<pre class="bash"><code>
 mkdir data
 
 # overlap data
@@ -360,8 +357,9 @@ ln -s /home/DIR/v1_boma/* data/
 # GenRED
 ln -s /home/DIR/v1_genred/* data/
 </code></pre>
-<section id="pgc-mdd2-ukbb-overlap" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> PGC MDD2-UKBB overlap</h1>
+</section>
+<section id="pgc-mdd2-ukbb-overlap" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> PGC MDD2-UKBB overlap</h1>
 <p>Overlap between PGC MDD and UKBB cohorts were matched by <a href="https://personal.broadinstitute.org/sripke/share_links/checksums_download/">genotype checksums</a> (see also <a href="https://academic.oup.com/bioinformatics/article/28/6/886/312495">Turchin and Hirschhorn 2012</a>).</p>
 <pre class="r"><code>library(readr)
 library(dplyr)</code></pre>
@@ -411,8 +409,8 @@ cohorts_count</code></pre>
 ## 12 stm2       1
 ## 13 twg2       9</code></pre>
 </section>
-<section id="phenotypes" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Phenotypes</h1>
+<section id="phenotypes" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Phenotypes</h1>
 <p>For cohorts with overlap, create MDD case/control phenotype files where phenotype of overlapping participants is set to missing (<code>-9</code>).</p>
 <pre class="r"><code>fams &lt;- lapply(cohorts_count$cohort, function(cohort) {
 
@@ -462,8 +460,8 @@ tally()</code></pre>
 
 write(datasets_info, &#39;data/datasets_info&#39;, ncol=1) </code></pre>
 </section>
-<section id="gwas" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> GWAS</h1>
+<section id="gwas" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> GWAS</h1>
 <p>Run the Ricopoli pipeline</p>
 <pre class="bash"><code>
 cd data
@@ -500,8 +498,8 @@ for daner in $wave2/summary_stats_0517/single_dataset/daner_mdd_*.gz; do
 done
 </code></pre>
 </section>
-<section id="meta-analysis" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Meta-analysis</h1>
+<section id="meta-analysis" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Meta-analysis</h1>
 <p>Meta-analyze PGC MDD anchor cohorts</p>
 <pre class="bash"><code>
 mkdir -p data/meta

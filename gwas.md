@@ -45,8 +45,6 @@ Rscript -e "rmarkdown::render('gwas.Rmd')"
 ```
 
 
-```
-
 # Directory setup
 
 `DIR` is a stand-in for the location of each data set
