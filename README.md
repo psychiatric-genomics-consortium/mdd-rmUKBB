@@ -5,7 +5,10 @@ PGC MDD meta-analysis removing individual overlap with UK Biobank.
 
 Many uses of genome-wide summary statistics require that there be no sample overlap between the discovery and testing datasets. [UK Biobank](https://www.ukbiobank.ac.uk/) is an open health data set which has been included in previous PGC Major Depressive Disorder GWAS (Wray et al 2018, Howard et al 2019). Because UK Biobank (UKBB) is used by many researchers, we have conducted and released GWAS summary stastics where overlap with UKBB has been excluded.
 
+Datasets used are individual level data from the MDD Wave2 cohorts and summary statistics from the additional MDD cohorts (deCODE, GenScot, GERA, iPsych, 23andMe).
+
 Data for this project are held on [LISA](http://geneticcluster.org/) in the directories listed in the `README.mddw2sum` and `README.mdd00001` files in your LISA home directory. Preimputation QC and imputation was performed previously using the [RICOPILI](https://sites.google.com/a/broadinstitute.org/ricopili) modules.
+
 
 ### Step 1: Genotype checksums
 
@@ -21,7 +24,7 @@ GWAS was performed using the updated phenotype files using the RICOPILI `postimp
 
 ### Step 4: Conduct meta-analytic GWAS
 
-Meta analysis was first conducted on the 29 PGC MDD cohorts using the `rmUKBB` summary statistics. These meta-analytic results were then meta-analyzed with the additional cohorts (DECODE, GenScot, GERA, iPsych, 23andMe). See Section 5 of [gwas.md](gwas.md).
+Meta analysis was first conducted on the 29 PGC MDD cohorts using the `rmUKBB` summary statistics. These meta-analytic results were then meta-analyzed with the additional cohorts (deCODE, GenScot, GERA, iPsych, 23andMe). See Section 5 of [gwas.md](gwas.md).
 
 
 ## Data Availability
@@ -37,9 +40,15 @@ Meta-analyzed summary statistics excluding 23andMe is available for [download fr
 
 ## Analysts
 
+### Major Depressive Disorder Working Group of the Psychiatric Genomics Consortium
+
 * **Mark James Adams** - *analyst* - [Edinburgh](https://mhdss.ac.uk)
 * **Swapnil Awasthi** - *analyst* - [Broad](https://www.broadinstitute.org/)
 * **David Howard** - *analyst* - [KCL](https://www.kcl.ac.uk/)
+* **Naomi Wray** - *analytical group director* - [Queensland](https://cnsgenomics.com/)
+* **Stephan Ripke** - *analytical group director* - [Broad](https://www.broadinstitute.org/)
+* **Andrew McIntosh** - *workgroup chair* - [Edinburgh](https://mhdss.ac.uk)
+* **Cathryn Lewis** - *workgroup chair* - [KCL](https://www.kcl.ac.uk/)
 
 ## License
 
