@@ -9,22 +9,28 @@ Datasets used are individual level data from the MDD Wave2 cohorts and summary s
 
 Data for this project are held on [LISA](http://geneticcluster.org/) in the directories listed in the `README.mddw2sum` and `README.mdd00001` files in your LISA home directory. Preimputation QC and imputation was performed previously using the [RICOPILI](https://sites.google.com/a/broadinstitute.org/ricopili) modules.
 
+## Project index
+
+- [GWAS](gwas.html): Setup phenotype files and run meta-analysis.
+
+## Project outline
+
 
 ### Step 1: Genotype checksums
 
-[Checksums](https://personal.broadinstitute.org/sripke/share_links/checksums_download/) were used to identify potentially identical individuals between UKBB and PGC MDD samples. See Section 2 of [GWAS](gwas.html)
+[Checksums](https://personal.broadinstitute.org/sripke/share_links/checksums_download/) were used to identify potentially identical individuals between UKBB and PGC MDD samples. See [Section 2 of GWAS](gwas.html#pgc-mdd2-ukbb-overlap)
 
 ### Step 2: Prepare phenotypes
 
-Phenotypes were prepared by copying case/control status from each PGC MDD cohorts `.fam` file and setting the phenotype of individuals overlapping with UKBB to `-9`. See Section 3 of [GWAS](gwas.html).
+Phenotypes were prepared by copying case/control status from each PGC MDD cohorts `.fam` file and setting the phenotype of individuals overlapping with UKBB to `-9`. See [Section 3 of GWAS](gwas.html#phenotypes).
 
 ### Step 3: Conduct GWAS removing UKBB overlap (`rmUKBB`)
 
-GWAS was performed using the updated phenotype files using the RICOPILI `postimp_navi` command. See Section 4 of [GWAS](gwas.html).
+GWAS was performed using the updated phenotype files using the RICOPILI `postimp_navi` command. See [Section 4 of GWAS](gwas.html#gwas).
 
 ### Step 4: Conduct meta-analytic GWAS
 
-Meta analysis was first conducted on the 29 PGC MDD cohorts using the `rmUKBB` summary statistics. These meta-analytic results were then meta-analyzed with the additional cohorts (deCODE, GenScot, GERA, iPsych, 23andMe). See Section 5 of [GWAS](gwas.html).
+Meta analysis was first conducted on the 29 PGC MDD cohorts using the `rmUKBB` summary statistics. These meta-analytic results were then meta-analyzed with the additional cohorts (deCODE, GenScot, GERA, iPsych, 23andMe). See [Section 5 of GWAS](gwas.html#meta-analysis).
 
 
 ## Data Availability
