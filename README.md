@@ -1,5 +1,5 @@
 # mdd-rmUKBB
-PGC MDD meta-analysis removing individual overlap with UK Biobank.
+PGC MDD meta-analysis removing individual overlap with UK Biobank **(Work in progress)**.
 
 
 ## Project overview
@@ -59,6 +59,10 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 * [Major Depressive Disorder Workgroup of the Psychiatric Genomics Consortium](https://www.med.unc.edu/pgc/pgc-workgroups/major-depressive-disorder/)
 * The PGC has received major funding from the US National Institute of Mental Health (5 U01MH109528-03).
+
+## Contact
+
+- [Mark James Adams](mailto:mark.adams@ed.ac.uk), [University of Edinburgh](https://www.ed.ac.uk/profile/dr-mark-james-adams).
 
 ## References
 
