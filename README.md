@@ -1,6 +1,5 @@
 # mdd-rmUKBB
-PGC MDD meta-analysis removing individual overlap with UK Biobank **(Work in progress)**.
-
+Psychiatric Genomics Consortium (PGC) Major Depressive Disorder (MDD) genome-wide association study meta-analysis removing individual overlap with UK Biobank **(Work in progress)**.
 
 ## Project overview
 
