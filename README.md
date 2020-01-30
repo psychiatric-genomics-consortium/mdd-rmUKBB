@@ -1,6 +1,7 @@
 # mdd-rmUKBB
 PGC MDD meta-analysis removing individual overlap with UK Biobank.
 
+
 ## Project overview
 
 Many uses of genome-wide summary statistics require that there be no sample overlap between the discovery and testing datasets. [UK Biobank](https://www.ukbiobank.ac.uk/) is an open health data set which has been included in previous PGC Major Depressive Disorder GWAS (Wray et al 2018, Howard et al 2019). Because UK Biobank (UKBB) is used by many researchers, we have conducted and released GWAS summary stastics where overlap with UKBB has been excluded.
@@ -29,7 +30,7 @@ Meta analysis was first conducted on the 29 PGC MDD cohorts using the `rmUKBB` s
 
 ## Data Availability
 
-Meta-analyzed summary statistics excluding 23andMe is available for [download from the PGC](https://www.med.unc.edu/pgc/results-and-downloads/mdd/) as "TBD" (checksum: TBD). Results including 23andMe is available by contacting the PGC [Data Access Committee](https://www.med.unc.edu/pgc/shared-methods/open-source-philosophy/)
+Meta-analyzed summary statistics excluding 23andMe will be available for [download from the PGC](https://www.med.unc.edu/pgc/results-and-downloads/mdd/) as "TBD" (checksum: TBD). Results including 23andMe will be available by contacting the PGC [Data Access Committee](https://www.med.unc.edu/pgc/shared-methods/open-source-philosophy/)
 
 ## Requirements
 
@@ -57,6 +58,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## Acknowledgments
 
 * [Major Depressive Disorder Workgroup of the Psychiatric Genomics Consortium](https://www.med.unc.edu/pgc/pgc-workgroups/major-depressive-disorder/)
+* The PGC has received major funding from the US National Institute of Mental Health (5 U01MH109528-03).
 
 ## References
 
