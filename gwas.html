@@ -475,8 +475,15 @@ postimp_navi --out pgc_MDD13 --addout rmUKBB \
 <pre class="bash"><code>
 mkdir -p data/summary_stats_0120_rmUKBB/single_dataset/additional_datasets
 
-# single datasets
+# single datasets run here
 cp data/report_pgc_MDD13_rmUKBB/daner_mdd_*.gz data/summary_stats_0120_rmUKBB/single_dataset/
+
+# rename to indicate that UKB overlap was removed
+## NB: LISA has a PERL version of rename
+rename &#39;s/_eur/_rmUKBB_eur/&#39; data/summary_stats_0120_rmUKBB/single_dataset/*.gz 
+
+# single datasets run elsewhere
+cp $DIR/summary_stats_0517/jjp2_exc.UKBsamples/daner_mdd_jjp2_4UKB_exc.sa.2102.gz data/summary_stats_0120_rmUKBB/single_dataset/daner_mdd_jjp2_rmUKBB_eur_sr-qc.hg19.ch.fl.gz
 
 # additional datasets
 
@@ -484,16 +491,21 @@ cp data/report_pgc_MDD13_rmUKBB/daner_mdd_*.gz data/summary_stats_0120_rmUKBB/si
 cp DIR/daner_mdd_genscot_1119a_rmUKBB.gz data/summary_stats_0120_rmUKBB/single_dataset/additional_datasets/
 
 # symlink other additional datasets except for GenScot and UKBB
-ln -s DIR/summary_stats_0517/single_dataset/additional_datasets/daner_{GERA,mdd_decode,mddGWAS_new_ipsych}*.gz data/summary_stats_0120_rmUKBB/single_dataset/additional_datasets/
+ln -s $DIR/summary_stats_0517/single_dataset/additional_datasets/daner_{GERA,mdd_decode,mddGWAS_new_ipsych}*.gz data/summary_stats_0120_rmUKBB/single_dataset/additional_datasets/
 </code></pre>
 <p>Link anchor cohort single datasets that did not need to remove UKBB.</p>
 <pre class="bash"><code>
-for daner in $wave2/summary_stats_0517/single_dataset/daner_mdd_*.gz; do
+for daner in $DIR/summary_stats_0517/single_dataset/daner_mdd_*.gz; do
         # get filename
         daner_file=$(basename $daner)
+        # get cohort name
+        cohort=$(echo $daner_file | awk -F_ &#39;{print $3}&#39;)
         # check if there is not already a daner file with this name
-        if [ ! -f data/summary_stats_0120_rmUKBB/single_dataset/${daner_file} ]; then
+        if [ ! -f data/summary_stats_0120_rmUKBB/single_dataset/*${cohort}*.gz ]; then
+                echo &quot;Adding cohort ${cohort}&quot;
                 ln -s $daner data/summary_stats_0120_rmUKBB/single_dataset/
+       else
+               echo &quot;Already have cohort ${cohort}&quot;
        fi
 done
 </code></pre>

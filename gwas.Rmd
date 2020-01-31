@@ -5,9 +5,6 @@ output:
   html_document:
     toc: TRUE
     number_sections: TRUE
-    keep_md: true
-  md_document:
-    variant: markdown_github
 ---
 
 Recent PGC MDD GWAS ([Wray...Sullivan 2018](https://www.nature.com/articles/s41588-018-0090-3?_ga=2.222013656.112907065.1541203200-2059058911.1541203200), [Howard...McIntosh 2019](https://www.nature.com/articles/s41593-018-0326-7)) contain summary statistics from [UK Biobank](https://www.ukbiobank.ac.uk/) (UKBB). Here we create summary statistics that have UK Biobank participants removed.
