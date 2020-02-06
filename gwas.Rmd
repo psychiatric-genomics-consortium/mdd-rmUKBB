@@ -16,32 +16,6 @@ There are 959 participants that overlap between PGC MDD and UKBB cohorts. In pre
 
 Analysis performed on the [LISA cluster](http://geneticcluster.org/) using [Ricopili](https://sites.google.com/a/broadinstitute.org/ricopili/). The R code embedded in this document can be run while this document is rendered but bash code is set to not evaluated but can be submitted to the cluster to reproduce this analysis.
 
-To get an interactive session on LISA and load required programs:
-
-```{bash, eval=FALSE}
-
-#Go into interactive mode
-srun -n 16 -t 1:00:00 --pty bash -il
-
-#Load R
-module load pre2019
-module load R/3.4.3
-
-# download pandoc
-curl -L -O https://github.com/jgm/pandoc/releases/download/2.9.1.1/pandoc-2.9.1.1-linux-amd64.tar.gz
-tar xzf pandoc-2.9.1.1-linux-amd64.tar.gz
-
-
-```
-
-This document can be generate with
-
-```{bash, eval=FALSE}
-
-export PATH=$PATH:pandoc-2.9.1.1/bin
-Rscript -e "rmarkdown::render('gwas.Rmd')"
-
-```
 
 
 # Directory setup

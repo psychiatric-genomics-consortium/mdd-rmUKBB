@@ -9,22 +9,37 @@ Datasets used are individual level data from the MDD Wave2 cohorts and summary s
 
 Data for this project are held on [LISA](http://geneticcluster.org/) in the directories listed in the `README.mddw2sum` and `README.mdd00001` files in your LISA home directory. Preimputation QC and imputation was performed previously using the [RICOPILI](https://sites.google.com/a/broadinstitute.org/ricopili) modules.
 
+This project is viewable on [GitHub pages](https://psychiatric-genomics-consortium.github.io/mdd-rmUKBB/).
 
-### Step 1: Genotype checksums
 
-[Checksums](https://personal.broadinstitute.org/sripke/share_links/checksums_download/) were used to identify potentially identical individuals between UKBB and PGC MDD samples. See Section 2 of [gwas.md](gwas.md)
+### Setup and render notebook
 
-### Step 2: Prepare phenotypes
+To get an interactive session on LISA and load required programs:
 
-Phenotypes were prepared by copying case/control status from each PGC MDD cohorts `.fam` file and setting the phenotype of individuals overlapping with UKBB to `-9`. See Section 3 of [gwas.md](gwas.md).
+```{bash, eval=FALSE}
 
-### Step 3: Conduct GWAS removing UKBB overlap (`rmUKBB`)
+#Go into interactive mode
+srun -n 16 -t 1:00:00 --pty bash -il
 
-GWAS was performed using the updated phenotype files using the RICOPILI `postimp_navi` command. See Section 4 of [gwas.md](gwas.md).
+#Load R
+module load pre2019
+module load R/3.4.3
 
-### Step 4: Conduct meta-analytic GWAS
+# download pandoc
+curl -L -O https://github.com/jgm/pandoc/releases/download/2.9.1.1/pandoc-2.9.1.1-linux-amd64.tar.gz
+tar xzf pandoc-2.9.1.1-linux-amd64.tar.gz
 
-Meta analysis was first conducted on the 29 PGC MDD cohorts using the `rmUKBB` summary statistics. These meta-analytic results were then meta-analyzed with the additional cohorts (deCODE, GenScot, GERA, iPsych, 23andMe). See Section 5 of [gwas.md](gwas.md).
+
+```
+
+Generate main GWAS notebook
+
+```{bash, eval=FALSE}
+
+export PATH=$PATH:pandoc-2.9.1.1/bin
+Rscript -e "rmarkdown::render('gwas.Rmd')"
+
+```
 
 
 ## Data Availability
