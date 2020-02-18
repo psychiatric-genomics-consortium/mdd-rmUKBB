@@ -139,6 +139,8 @@ postimp_navi --out pgc_MDD13 --addout rmUKBB \
 --popname eur \
 --onlymeta --noclump --noldsc --nolahunt
 
+cd ../
+
 ```
 
 Copy anchor cohort single datasets that removed UKBB and link additional datasets for meta-analysis
@@ -162,8 +164,11 @@ cp $DIR/summary_stats_0517/jjp2_exc.UKBsamples/daner_mdd_jjp2_4UKB_exc.sa.2102.g
 # copy GenScot removing UKBB
 cp DIR/daner_mdd_genscot_1119a_rmUKBB.gz data/summary_stats_0120_rmUKBB/single_dataset/additional_datasets/
 
-# symlink other additional datasets except for GenScot and UKBB
-ln -s $DIR/summary_stats_0517/single_dataset/additional_datasets/daner_{GERA,mdd_decode,mddGWAS_new_ipsych}*.gz data/summary_stats_0120_rmUKBB/single_dataset/additional_datasets/
+# symlink other additional datasets except for GenScot, UKBB, and iPsych
+ln -s $DIR/summary_stats_0517/single_dataset/additional_datasets/daner_{GERA,mdd_decode}*.gz data/summary_stats_0120_rmUKBB/single_dataset/additional_datasets/
+
+# symlink iPsych
+ln -s $DIR/summary_stats_0517_ipsych/daner_mddGWAS_new_ipsych_170220.meta.gz data/summary_stats_0120_rmUKBB/single_dataset/additional_datasets/
 
 ```
 
@@ -204,15 +209,17 @@ ls daner_mdd_*.gz > anchor_dataset_dir
 
 # check that none of the symlinks are broken
 for daner in daner_mdd_*.gz; do
-        if [ -e $daner ]; then
-          echo $daner does exist
+        if [ ! -e $daner ]; then
+          echo "$daner does not exist"
         fi
 done
 
 # symlink the reference file
-ln -s /home/DIR/v1/reference_info .
+ln -s ../reference_info .
 
 postimp_navi --result anchor_dataset_dir --onlymeta --out MDD29.0120a.rmUKBB 
+
+cd ../../
 
 ```
 
@@ -223,6 +230,8 @@ Copy meta analysis file
 cp data/meta/report_MDD29.0120a.rmUKBB/daner_MDD29.0120a.rmUKBB.gz data/summary_stats_0120_rmUKBB/single_dataset/
 
 ``` 
+
+## Full meta analyis excluding 23andMe
 
 Set up full meta analysis
 
@@ -237,9 +246,58 @@ ln -s ../summary_stats_0120_rmUKBB/single_dataset/additional_datasets/daner_*.gz
 
 ls daner_*.gz > full_dataset_dir
 
-ln -s ../meta/reference_info .
+ln -s ../reference_info .
 
-postimp_navi --result full_dataset_dir --onlymeta --out pgc_mdd_meta_w2_no23andMe_rmUKBB
+postimp_navi --result full_dataset_dir --nolahunt --out pgc_mdd_meta_w2_no23andMe_rmUKBB
 
+cd ../../
+
+
+```
+
+Copy out sumstats and supporting files
+
+```{bash, eval=FALSE}
+
+mkdir -p data/summary_stats_0120_rmUKBB/pgc_mdd_meta_no23andMe
+
+REPORT=data/full_meta/report_pgc_mdd_meta_w2_no23andMe_rmUKBB
+INFIX=pgc_mdd_meta_w2_no23andMe_rmUKBB
+
+cp -L $REPORT/areas.fo.het.${INFIX}.pdf.gz \
+$REPORT/areas.fo.${INFIX}.pdf \
+$REPORT/areas.${INFIX}.pdf \
+$REPORT/basic.${INFIX}.num.xls \
+$REPORT/daner_${INFIX}.gz.p3.gz \
+$REPORT/daner_${INFIX}.gz.p4.clump.areator.sorted.1mhc \
+$REPORT/daner_${INFIX}.gz.p4.clump.areator.sorted.1mhc.xls \
+$REPORT/daner_${INFIX}.het.gz.p4.clump.areator.sorted.1mhc \
+$REPORT/daner_${INFIX}.het.gz.p4.clump.areator.sorted.1mhc.xls \
+$REPORT/manhattan.daner_${INFIX}*.pdf \
+$REPORT/${INFIX}*qq.pdf \
+data/summary_stats_0120_rmUKBB/pgc_mdd_meta_no23andMe
+
+# retain sumstats rows with the correct number of columns
+zcat $REPORT/daner_${INFIX}.gz | awk -F $'\t' '{if(NF == 19) {print $0}}' | gzip -c > data/summary_stats_0120_rmUKBB/pgc_mdd_meta_no23andMe/daner_${INFIX}.gz
+
+```
+
+## Full meta analyis
+
+
+```{bash, eval=FALSE}
+
+mkdir -p data/full_meta_23am
+cd data/full_meta_23am
+
+ln -s $DIR/23andme_whole_genome/daner_23andMe_v5_170227_pgc_aligned_.assoc.gz .
+ln -s ../summary_stats_0120_rmUKBB/single_dataset/daner_MDD29.0120a.rmUKBB.gz .
+ln -s ../summary_stats_0120_rmUKBB/single_dataset/additional_datasets/daner_*.gz .
+
+ls daner_*.gz > full_dataset_dir
+
+ln -s ../reference_info .
+
+postimp_navi --result full_dataset_dir --nolahunt --out pgc_mdd_meta_w2_rmUKBB
 
 ```
