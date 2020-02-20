@@ -50,6 +50,7 @@ library(dplyr)
 library(stringr)
 library(tidyr)
 library(readxl)
+library(ggplot2)
 
 overlap <- read_table2('data/959_PGC_UKB_overlap.txt', col_names=c('CS', 'FID', 'IID'))
 
@@ -147,6 +148,44 @@ postimp_navi --out pgc_MDD13 --addout rmUKBB \
 cd ../
 
 ```
+
+## Output checks
+
+Check the sumstats file against the imputation panel
+
+```{r gwas_check, cache=TRUE}
+
+mdd13_rmUKBB_daner <- read_tsv('data/report_pgc_MDD13_rmUKBB/daner_pgc_MDD13_rmUKBB.gz')
+
+daner_snps <-
+mdd13_rmUKBB_daner %>% 
+  filter(FRQ_U_14006 >= 0.01 & FRQ_U_14006 <= 0.99) %>% 
+  mutate(MB=floor(BP/1e6)) %>%
+  group_by(CHR, MB) %>%
+  summarise(snpObs=n())
+
+sumfrq_eur <- read_table2('/home/gwas/pgc-samples/hapmap_ref/impute2_ref/1KG_Aug12/ALL_1000G_phase1integrated_v3_impute_macGT1/sumfrq.eur', col_names=c('SNP', 'COUNT', 'A1', 'FRQ_A1', 'A2', 'FRQ_A2', 'A1_COUNT', 'CHR', 'BP'))
+
+impute_snps <-
+sumfrq_eur %>%
+  filter(FRQ_A1 >= 0.01) %>%
+  mutate(MB=floor(BP/1e6)) %>%
+  group_by(CHR, MB) %>%
+  summarise(snpRef=n())
+
+output_snps <- daner_snps %>%
+  left_join(impute_snps, by=c('CHR', 'MB')) %>%
+  mutate(snpObs=if_else(is.na(snpObs), true=0L, false=snpObs))
+
+ggplot(output_snps, aes(x=snpObs, y=snpRef, size=snpObs+snpRef)) +
+geom_point() +
+scale_x_continuous('SNP count observed') +
+scale_y_continuous('SNP count expected') +
+coord_fixed()
+
+```
+
+## Meta-analysis setup
 
 Copy anchor cohort single datasets that removed UKBB and link additional datasets for meta-analysis
 
