@@ -177,7 +177,7 @@ output_snps <- daner_snps %>%
   left_join(impute_snps, by=c('CHR', 'MB')) %>%
   mutate(snpObs=if_else(is.na(snpObs), true=0L, false=snpObs))
 
-ggplot(output_snps, aes(x=snpObs, y=snpRef, size=snpObs+snpRef)) +
+ggplot(output_snps, aes(x=snpObs, y=snpRef)) +
 geom_point() +
 scale_x_continuous('SNP count observed') +
 scale_y_continuous('SNP count expected') +
