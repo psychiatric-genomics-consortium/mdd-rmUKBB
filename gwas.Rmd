@@ -235,7 +235,7 @@ cp data/meta/report_MDD29.0120a.rmUKBB/daner_MDD29.0120a.rmUKBB.gz data/summary_
 
 ``` 
 
-## Full meta analyis excluding 23andMe
+## Full meta analysis excluding 23andMe
 
 Set up full meta analysis
 
@@ -302,7 +302,8 @@ zcat $REPORT/daner_${INFIX}.gz | awk -F $'\t' '{if(NF < 19) {print $0}}' | wc -l
 ```{r}
 
 read_excel('data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta_no23andMe/daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.gz.p4.clump.areator.sorted.1mhc.xls') %>%
-	select(-`LD-friends(0.1).p0.001`, -`LD-friends(0.6).p0.001`, -`gwas_catalog_span.6`)
+	select(-`LD-friends(0.1).p0.001`, -`LD-friends(0.6).p0.001`, -`gwas_catalog_span.6`) %>%
+	filter(P <= 5e-8)
 
 ```
 
@@ -310,11 +311,11 @@ read_excel('data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta_no23andMe/daner_pgc
 
 mkdir -p results
 
-pdftoppm -png -r 100 data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta_no23andMe/manhattan.daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.gz.pdf results/manhattan.daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.gz
+pdftoppm -png -r 100 data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta_no23andMe/manhattan.daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.gz.nog2.pdf results/manhattan.daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.gz.nog2
 
 ```
 
-![PGC MDD Full no 23andMe rmUKBB Manhattan plot](results/manhattan.daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.gz-1.png)
+![PGC MDD Full no 23andMe rmUKBB Manhattan plot](results/manhattan.daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.gz.nog2-1.png)
 
 ## Full meta analysis
 
@@ -367,7 +368,8 @@ zcat $REPORT/daner_${INFIX}.gz | awk -F $'\t' '{if(NF == 19) {print $0}}' | gzip
 ```{r}
 
 read_excel('data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta/daner_pgc_mdd_meta_w2_rmUKBB.gz.p4.clump.areator.sorted.1mhc.xls') %>%
-	select(-`LD-friends(0.1).p0.001`, -`LD-friends(0.6).p0.001`, -`gwas_catalog_span.6`)
+	select(-`LD-friends(0.1).p0.001`, -`LD-friends(0.6).p0.001`, -`gwas_catalog_span.6`) %>%
+	filter(P <= 5e-8)
 
 ```
 
@@ -375,8 +377,8 @@ read_excel('data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta/daner_pgc_mdd_meta_
 
 mkdir -p results
 
-pdftoppm -png -r 100 data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta/manhattan.daner_pgc_mdd_meta_w2_rmUKBB.gz.pdf results/manhattan.daner_pgc_mdd_meta_w2_rmUKBB.gz
+pdftoppm -png -r 100 data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta/manhattan.daner_pgc_mdd_meta_w2_rmUKBB.gz.nog2.pdf results/manhattan.daner_pgc_mdd_meta_w2_rmUKBB.gz.nog2
 
 ```
 
-![PGC MDD Full rmUKBB Manhattan plot](results/manhattan.daner_pgc_mdd_meta_w2_rmUKBB.gz-1.png)
+![PGC MDD Full rmUKBB Manhattan plot](results/manhattan.daner_pgc_mdd_meta_w2_rmUKBB.gz.nog2-1.png)
