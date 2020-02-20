@@ -52,7 +52,7 @@ overlap <- read_table2('data/959_PGC_UKB_overlap.txt', col_names=c('CS', 'FID', 
 
 ``` 
 
-Tally cohorts with overlap
+Tally PGC cohorts with overlap
 
 ```{r}
 
@@ -68,6 +68,8 @@ tally()
 cohorts_count
 
 ```
+
+The additional overlap not listed is from with the [Generation Scotland cohort](https://ccbs-stradl.github.io/GenScot-MDD-rmUKBB/).
 
 # Phenotypes
 
@@ -162,7 +164,7 @@ cp $DIR/summary_stats_0517/jjp2_exc.UKBsamples/daner_mdd_jjp2_4UKB_exc.sa.2102.g
 # additional datasets
 
 # copy GenScot removing UKBB
-cp DIR/daner_mdd_genscot_1119a_rmUKBB.gz data/summary_stats_0120_rmUKBB/single_dataset/additional_datasets/
+cp DIR/daner_mdd_genscot_1119a_rmUKBB.aligned.gz data/summary_stats_0120_rmUKBB/single_dataset/additional_datasets/
 
 # symlink other additional datasets except for GenScot, UKBB, and iPsych
 ln -s $DIR/summary_stats_0517/single_dataset/additional_datasets/daner_{GERA,mdd_decode}*.gz data/summary_stats_0120_rmUKBB/single_dataset/additional_datasets/
@@ -259,7 +261,7 @@ Copy out sumstats and supporting files
 
 ```{bash, eval=FALSE}
 
-mkdir -p data/summary_stats_0120_rmUKBB/pgc_mdd_meta_no23andMe
+mkdir -p data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta_no23andMe
 
 REPORT=data/full_meta/report_pgc_mdd_meta_w2_no23andMe_rmUKBB
 INFIX=pgc_mdd_meta_w2_no23andMe_rmUKBB
@@ -277,8 +279,17 @@ $REPORT/manhattan.daner_${INFIX}*.pdf \
 $REPORT/${INFIX}*qq.pdf \
 data/summary_stats_0120_rmUKBB/pgc_mdd_meta_no23andMe
 
-# retain sumstats rows with the correct number of columns
+# retain sumstats rows with the correct number of columns (19)
+# this arises from SNPs that are only present in one of the underlying cohorts and so some of the supplementary columns
+# are not included. This removes an acceptably small number of SNPS (< 100)
 zcat $REPORT/daner_${INFIX}.gz | awk -F $'\t' '{if(NF == 19) {print $0}}' | gzip -c > data/summary_stats_0120_rmUKBB/pgc_mdd_meta_no23andMe/daner_${INFIX}.gz
+
+```
+
+Check number of excluded SNPs
+```{bash daner_miss_cols, cache=TRUE}
+
+zcat $REPORT/daner_${INFIX}.gz | awk -F $'\t' '{if(NF < 19) {print $0}}' | wc -l 
 
 ```
 
@@ -299,5 +310,31 @@ ls daner_*.gz > full_dataset_dir
 ln -s ../reference_info .
 
 postimp_navi --result full_dataset_dir --nolahunt --out pgc_mdd_meta_w2_rmUKBB
+
+```
+
+Copy results files
+```{bash, eval=FALSE}
+
+mkdir -p data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta
+
+REPORT=data/full_meta_23am/report_pgc_mdd_meta_w2_rmUKBB
+INFIX=pgc_mdd_meta_w2_rmUKBB
+
+cp -L $REPORT/areas.fo.het.${INFIX}.pdf.gz \
+$REPORT/areas.fo.${INFIX}.pdf \
+$REPORT/areas.${INFIX}.pdf \
+$REPORT/basic.${INFIX}.num.xls \
+$REPORT/daner_${INFIX}.gz.p3.gz \
+$REPORT/daner_${INFIX}.gz.p4.clump.areator.sorted.1mhc \
+$REPORT/daner_${INFIX}.gz.p4.clump.areator.sorted.1mhc.xls \
+$REPORT/daner_${INFIX}.het.gz.p4.clump.areator.sorted.1mhc \
+$REPORT/daner_${INFIX}.het.gz.p4.clump.areator.sorted.1mhc.xls \
+$REPORT/manhattan.daner_${INFIX}*.pdf \
+$REPORT/${INFIX}*qq.pdf \
+data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta
+
+# retain sumstats rows with the correct number of columns (19)
+zcat $REPORT/daner_${INFIX}.gz | awk -F $'\t' '{if(NF == 19) {print $0}}' | gzip -c > data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta/daner_${INFIX}.gz
 
 ```
