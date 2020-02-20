@@ -9,7 +9,7 @@ Datasets used are individual level data from the MDD Wave2 cohorts and summary s
 
 Data for this project are held on [LISA](http://geneticcluster.org/) in the directories listed in the `README.mddw2sum` and `README.mdd00001` files in your LISA home directory. Preimputation QC and imputation was performed previously using the [RICOPILI](https://sites.google.com/a/broadinstitute.org/ricopili) modules.
 
-This project is viewable on [GitHub pages](https://psychiatric-genomics-consortium.github.io/mdd-rmUKBB/).
+This project is viewable at [https://psychiatric-genomics-consortium.github.io/mdd-rmUKBB/](https://psychiatric-genomics-consortium.github.io/mdd-rmUKBB/).
 
 
 ### Setup and render notebook
