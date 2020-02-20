@@ -5,6 +5,7 @@ output:
   html_document:
     toc: TRUE
     number_sections: TRUE
+    df_print: paged
 ---
 
 Recent PGC MDD GWAS ([Wray...Sullivan 2018](https://www.nature.com/articles/s41588-018-0090-3?_ga=2.222013656.112907065.1541203200-2059058911.1541203200), [Howard...McIntosh 2019](https://www.nature.com/articles/s41593-018-0326-7)) contain summary statistics from [UK Biobank](https://www.ukbiobank.ac.uk/) (UKBB). Here we create summary statistics that have UK Biobank participants removed.
@@ -47,6 +48,7 @@ library(readr)
 library(dplyr)
 library(stringr)
 library(tidyr)
+library(readxl)
 
 overlap <- read_table2('data/959_PGC_UKB_overlap.txt', col_names=c('CS', 'FID', 'IID'))
 
@@ -289,11 +291,31 @@ zcat $REPORT/daner_${INFIX}.gz | awk -F $'\t' '{if(NF == 19) {print $0}}' | gzip
 Check number of excluded SNPs
 ```{bash daner_miss_cols, cache=TRUE}
 
+REPORT=data/full_meta/report_pgc_mdd_meta_w2_no23andMe_rmUKBB
+INFIX=pgc_mdd_meta_w2_no23andMe_rmUKBB
 zcat $REPORT/daner_${INFIX}.gz | awk -F $'\t' '{if(NF < 19) {print $0}}' | wc -l 
 
 ```
 
-## Full meta analyis
+### Results
+
+```{r}
+
+read_excel('data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta_no23andMe/daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.gz.p4.clump.areator.sorted.1mhc.xls') %>%
+	select(-`LD-friends(0.1).p0.001`, -`LD-friends(0.6).p0.001`, -`gwas_catalog_span.6`)
+
+```
+
+```{bash full_meta_no23am_man, cache=TRUE}
+
+mkdir -p results
+
+pdftoppm -png -r 100 data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta_no23andMe/manhattan.daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.gz.pdf results/manhattan.daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.gz
+
+```
+
+![PGC MDD Full no 23andMe rmUKBB Manhattan plot](results/manhattan.daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.gz-1.png)
+## Full meta analysis
 
 
 ```{bash, eval=FALSE}
@@ -338,3 +360,22 @@ data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta
 zcat $REPORT/daner_${INFIX}.gz | awk -F $'\t' '{if(NF == 19) {print $0}}' | gzip -c > data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta/daner_${INFIX}.gz
 
 ```
+
+### Results
+
+```{r}
+
+read_excel('data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta/daner_pgc_mdd_meta_w2_rmUKBB.gz.p4.clump.areator.sorted.1mhc.xls') %>%
+	select(-`LD-friends(0.1).p0.001`, -`LD-friends(0.6).p0.001`, -`gwas_catalog_span.6`)
+
+```
+
+```{bash full_meta_man, cache=TRUE}
+
+mkdir -p results
+
+pdftoppm -png -r 100 data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta/manhattan.daner_pgc_mdd_meta_w2_rmUKBB.gz.pdf results/manhattan.daner_pgc_mdd_meta_w2_rmUKBB.gz
+
+```
+
+![PGC MDD Full rmUKBB Manhattan plot](results/manhattan.daner_pgc_mdd_meta_w2_rmUKBB.gz-1.png)
