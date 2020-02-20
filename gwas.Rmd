@@ -322,9 +322,11 @@ $REPORT/${INFIX}*qq.pdf \
 data/summary_stats_0120_rmUKBB/pgc_mdd_meta_no23andMe
 
 # retain sumstats rows with the correct number of columns (19)
-# this arises from SNPs that are only present in one of the underlying cohorts and so some of the supplementary columns
-# are not included. This removes an acceptably small number of SNPS (< 100)
-zcat $REPORT/daner_${INFIX}.gz | awk -F $'\t' '{if(NF == 19) {print $0}}' | gzip -c > data/summary_stats_0120_rmUKBB/pgc_mdd_meta_no23andMe/daner_${INFIX}.gz
+# this arises from SNPs that are only present in one of the underlying cohorts and
+# some of the supplementary columns are not included. This removes an acceptably 
+# small number of SNPS (< 100)
+zcat $REPORT/daner_${INFIX}.gz | awk -F $'\t' '{if(NF == 19) {print $0}}' | gzip -c > data/full_meta/daner_${INFIX}.gz
+
 
 ```
 
@@ -336,6 +338,42 @@ INFIX=pgc_mdd_meta_w2_no23andMe_rmUKBB
 zcat $REPORT/daner_${INFIX}.gz | awk -F $'\t' '{if(NF < 19) {print $0}}' | wc -l 
 
 ```
+
+Check for duplicated CPIDs
+
+```{r full_meta_no23am, cache=TRUE}
+
+full_meta_no23am_daner <- read_tsv('data/full_meta/daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.gz')
+
+# CPID
+cpid_dups <-
+full_meta_no23am_daner %>%
+  group_by(CHR, BP) %>%
+  tally() %>%
+  filter(n > 1)
+
+nrow(cpid_dups)
+
+# SNP
+snp_dups <-
+full_meta_no23am_daner %>%
+  group_by(SNP) %>%
+  tally() %>%
+  filter(n > 1) %>%
+  arrange(n)
+
+nrow(snp_dups)
+
+# drop duplicated CPIDs
+full_meta_no23am_daner_nodups <- full_meta_no23am_daner %>%
+  anti_join(cpid_dups, by=c('CHR', 'BP')) %>%
+  arrange(CHR, BP)
+
+write_tsv(full_meta_no23am_daner_nodups, 'data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta_no23andMe/daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.gz')
+
+
+```
+
 
 ### Results
 
@@ -399,7 +437,42 @@ $REPORT/${INFIX}*qq.pdf \
 data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta
 
 # retain sumstats rows with the correct number of columns (19)
-zcat $REPORT/daner_${INFIX}.gz | awk -F $'\t' '{if(NF == 19) {print $0}}' | gzip -c > data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta/daner_${INFIX}.gz
+zcat $REPORT/daner_${INFIX}.gz | awk -F $'\t' '{if(NF == 19) {print $0}}' | gzip -c > data/full_meta_23am/daner_${INFIX}.gz
+
+```
+
+Check for duplicated CPIDs
+
+```{r full_meta, cache=TRUE}
+
+full_meta_daner <- read_tsv('data/full_meta_23am/daner_pgc_mdd_meta_w2_rmUKBB.gz')
+
+# CPID
+cpid_dups <-
+full_meta_daner %>%
+  group_by(CHR, BP) %>%
+  tally() %>%
+  filter(n > 1)
+
+nrow(cpid_dups)
+
+# SNP
+snp_dups <-
+full_meta_daner %>%
+  group_by(SNP) %>%
+  tally() %>%
+  filter(n > 1) %>%
+  arrange(n)
+
+nrow(snp_dups)
+
+# drop duplicated CPIDs
+full_meta_daner_nodups <- full_meta_daner %>%
+  anti_join(cpid_dups, by=c('CHR', 'BP')) %>%
+  arrange(CHR, BP)
+
+write_tsv(full_meta_daner_nodups, 'data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta/daner_pgc_mdd_meta_w2_rmUKBB.gz')
+
 
 ```
 
