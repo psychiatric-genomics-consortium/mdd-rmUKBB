@@ -3,9 +3,11 @@ Psychiatric Genomics Consortium (PGC) Major Depressive Disorder (MDD) genome-wid
 
 ## Project overview
 
-Many uses of genome-wide summary statistics require that there be no sample overlap between the discovery and testing datasets. [UK Biobank](https://www.ukbiobank.ac.uk/) is an open health data set which has been included in previous PGC Major Depressive Disorder GWAS (Wray et al 2018, Howard et al 2019). Because UK Biobank (UKBB) is used by many researchers, we have conducted and released GWAS summary stastics where overlap with UKBB has been excluded.
+Many uses of genome-wide summary statistics require that there be no sample overlap between the discovery and testing datasets. [UK Biobank](https://www.ukbiobank.ac.uk/) is an open health data set which has been included in previous PGC Major Depressive Disorder GWAS (Wray et al 2018, Howard et al 2019). Because UK Biobank (UKBB) is used by many researchers, we have conducted and released GWAS summary stastics where overlap with UKBB has been minimised.
 
 Datasets used are individual level data from the MDD Wave2 cohorts and summary statistics from the additional MDD cohorts (deCODE, GenScot, GERA, iPsych, 23andMe).
+
+The analysis excludes 335 participants from 12 PGC MDD cohorts and 622 participants from the Generation Scotland cohort. It retains two individuals overlapping with UK Biobank from one cohort (`shp0`) that we are not able to exclude presently.
 
 Data for this project are held on [LISA](http://geneticcluster.org/) in the directories listed in the `README.mddw2sum` and `README.mdd00001` files in your LISA home directory. Preimputation QC and imputation was performed previously using the [RICOPILI](https://sites.google.com/a/broadinstitute.org/ricopili) modules.
 
