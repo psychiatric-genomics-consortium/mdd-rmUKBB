@@ -8,12 +8,13 @@ output:
     df_print: paged
 ---
 
+# [Project overview](index.html)
+
 Recent PGC MDD GWAS ([Wray...Sullivan 2018](https://www.nature.com/articles/s41588-018-0090-3?_ga=2.222013656.112907065.1541203200-2059058911.1541203200), [Howard...McIntosh 2019](https://www.nature.com/articles/s41593-018-0326-7)) contain summary statistics from [UK Biobank](https://www.ukbiobank.ac.uk/) (UKBB). Here we create summary statistics that have UK Biobank participants removed.
 
 There are 959 participants that overlap between PGC MDD and UKBB cohorts. In previous analyses, this overlap was handled by removing overlapping individuals from the UKBB analysis. Thus, becuase these individuals were retained in the PGC cohorts, even versions of the Wray or Howard summary statistics that excluded the UKBB summary statistics from the meta-analysis (leave-one-out [LOO] with reference `noUKBB`) would overlap with the whole UKBB sample. For this analysis, we removed overlapping individuals from the PGC MDD cohorts before conducting the meta-analysis, and refer to these results as `rmUKBB` (**remove** UK Biobank).
 
 Analysis performed on the [LISA cluster](http://geneticcluster.org/) using [Ricopili](https://sites.google.com/a/broadinstitute.org/ricopili/). The R code embedded in this document can be run while this document is rendered but bash code is set to not evaluated but can be submitted to the cluster to reproduce this analysis.
-
 
 
 # Directory setup
