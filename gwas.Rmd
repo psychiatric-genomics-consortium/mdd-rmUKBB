@@ -315,6 +315,7 @@ pdftoppm -png -r 100 data/summary_stats_0120_rmUKBB/pgc_mdd_full_meta_no23andMe/
 ```
 
 ![PGC MDD Full no 23andMe rmUKBB Manhattan plot](results/manhattan.daner_pgc_mdd_meta_w2_no23andMe_rmUKBB.gz-1.png)
+
 ## Full meta analysis
 
 
