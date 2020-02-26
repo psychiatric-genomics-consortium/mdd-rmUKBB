@@ -16,8 +16,9 @@ There are 959 participants that overlap between PGC MDD and UKBB cohorts. In pre
 
 Analysis performed on the [LISA cluster](http://geneticcluster.org/) using [Ricopili](https://sites.google.com/a/broadinstitute.org/ricopili/). The R code embedded in this document can be run while this document is rendered but bash code is set to not evaluated but can be submitted to the cluster to reproduce this analysis.
 
+# Setup
 
-# Directory setup
+## Directory setup
 
 `DIR` is a stand-in for the location of each data set
 
@@ -38,6 +39,22 @@ ln -s /home/DIR/v1_boma/* data/
 ln -s /home/DIR/v1_genred/* data/
 
 ```
+
+## RICOPILI
+
+[Install RICOPILI](https://docs.google.com/document/d/14aa-oeT5hF541I8hHsDAL_42oyvlHRC5FWR7gir4xco/edit#heading=h.y8igfs7neh22)
+
+```{bash, eval=FALSE}
+
+#Install and unpack ricopili in your home directory
+wget https://sites.google.com/a/broadinstitute.org/ricopili/download//rp_bin.2019_Jun_25.001.tar.gz
+
+tar -xvzf rp_bin.2019_Jun_25.001.tar.gz
+
+```
+
+See the [ricopili.conf](https://personal.broadinstitute.org/sripke/share_links/rp_config_collections/rp_config.custom.sripke.lisa.slurm.0819a) file for LISA.
+
 
 # PGC MDD2-UKBB overlap
 
