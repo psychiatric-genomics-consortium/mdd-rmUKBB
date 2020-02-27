@@ -1,5 +1,5 @@
 # mdd-rmUKBB
-Psychiatric Genomics Consortium (PGC) Major Depressive Disorder (MDD) genome-wide association study meta-analysis removing individual overlap with UK Biobank **(Work in progress)**.
+Psychiatric Genomics Consortium (PGC) Major Depressive Disorder (MDD) genome-wide association study meta-analysis removing individual overlap with UK Biobank.
 
 ## Project overview
 
@@ -37,7 +37,7 @@ Meta analysis was first conducted on the 29 PGC MDD cohorts using the `rmUKBB` s
 
 ## Data Availability
 
-Meta-analyzed summary statistics excluding 23andMe will be available for [download from the PGC](https://www.med.unc.edu/pgc/results-and-downloads/mdd/) as "TBD" (checksum: TBD). Results including 23andMe will be available by contacting the PGC [Data Access Committee](https://www.med.unc.edu/pgc/shared-methods/open-source-philosophy/)
+Meta-analyzed summary statistics excluding 23andMe will be available for [download from the PGC](https://www.med.unc.edu/pgc/results-and-downloads/mdd/) as "PGC MDD No UKB / No 23andMe". Results including 23andMe will be available by contacting the PGC [Data Access Committee](https://www.med.unc.edu/pgc/shared-methods/open-source-philosophy/)
 
 ## Code availability
 
